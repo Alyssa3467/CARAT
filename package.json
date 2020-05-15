@@ -1,0 +1,22 @@
+{
+  "name": "carat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alyssa3467/CARAT.git"
+  },
+  "author": "Alyssa Nguyen <alyssa3467@geocities.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alyssa3467/CARAT/issues"
+  },
+  "homepage": "https://github.com/Alyssa3467/CARAT#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
