@@ -1,40 +1,130 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-console */
+/* eslint-disable node/shebang */
+/* eslint-disable require-jsdoc */
+/* eslint-disable no-magic-numbers */
+/* eslint-disable valid-jsdoc */
+
+'use strict';
+
 /**
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('carat:server');
-var http = require('http');
+const app = require('../app');
+const debug = require('debug')('carat:server');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const config = require('../config');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+const httpPort = normalizePort(config.http.port || '8080');
+const httpsPort = normalizePort(config.https.port || '8443');
+app.set('httpPort', httpPort);
+app.set('httpsPort', httpsPort);
+
+/**
+ * Set HTTPS options.
+ */
+const httpsOptions = {
+  ciphers:
+    'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:HIGH:!EXPORT:!MEDIUM:!LOW:!aNULL:!eNULL:!SSLv2:!SHA1:!CAMELLIA:!RSA',
+  minVersion: 'TLSv1.2', // Apparently Postman doesn't support TLSv1.3
+  passphrase: config.ssl.passphrase,
+};
+
+let certLoaded = false;
+// Try to load SSL certificate, preferring key/cert over PKCS #12
+/* eslint-disable node/no-sync */
+try {
+  try {
+    if (
+      typeof config.ssl.key !== 'undefined' &&
+      typeof config.ssl.cert !== 'undefined'
+    ) {
+      httpsOptions.key = fs.readFileSync(config.ssl.key);
+      httpsOptions.cert = fs.readFileSync(config.ssl.cert);
+      certLoaded = true;
+    }
+  } catch (e) {
+    try {
+      if (typeof config.ssl.pfx !== 'undefined') {
+        httpsOptions.pfx = fs.readFileSync(config.ssl.pfx);
+        certLoaded = true;
+      }
+    } catch (e) {
+      throw new Error('Unable to load SSL certificate');
+    }
+  }
+} catch (e) {
+  httpsOptions.pfx = undefined;
+  httpsOptions.key = undefined;
+  httpsOptions.cert = undefined;
+  console.error('Unable to load SSL certificate');
+  console.error(e);
+}
+
+/**
+ * Create HTTPS server if certificates have loaded.
+ */
+
+const httpsServer = certLoaded
+  ? https.createServer(httpsOptions, app)
+  : undefined;
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+/**
+ * Set up HTTPS redirect
+ */
+const httpsRedirector = function (req, res) {
+  debug('HTTPS redirect');
+  const httpStatus = require('http-status-codes');
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  res.writeHead(
+    httpStatus.PERMANENT_REDIRECT,
+    {
+      'Location': 'https://' + url.hostname + ':' + httpsPort + url.pathname + url.search
+    }
+  );
+  res.end();
+};
+
+const httpServer = httpsServer ? http.createServer(httpsRedirector) : http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+httpServer.listen(httpPort);
+httpServer.on('error', onError);
+httpServer.on('listening', onListening);
+
+if (certLoaded) {
+  httpsServer.listen(httpsPort);
+  httpsServer.on('error', function (err) {
+    onError(err, true);
+  });
+  httpsServer.on('listening', function (event) {
+    onListening(event, true);
+  });
+} else {
+  console.error('Problem starting HTTPS');
+}
 
 /**
  * Normalize a port into a number, string, or false.
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -53,38 +143,37 @@ function normalizePort(val) {
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error, secure) {
+  const port = secure ? httpsPort : httpPort;
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-
+  /* eslint-disable no-magic-numbers */
+  const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
-      process.exit(1);
+      process.exitCode(1);
       break;
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
-      process.exit(1);
+      process.exitCode(1);
       break;
     default:
       throw error;
   }
+  /* eslint-enable no-magic-numbers */
 }
 
 /**
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+function onListening(event, secure) {
+  const serverType = secure ? 'HTTPS' : 'HTTP';
+  const addr = secure ? httpsServer.address() : httpServer.address();
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  debug(serverType + ' listening on ' + bind);
 }
