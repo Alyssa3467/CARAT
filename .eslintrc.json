@@ -1,0 +1,30 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "commonjs": true,
+        "shared-node-browser": true,
+        "es6": true,
+        "mocha": true,
+        "mongo": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:node/recommended",
+        "plugin:import/recommended",
+        "google",
+        "prettier"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "rules": {
+        "strict": "error",
+        "require-atomic-updates": "error",
+        "no-magic-numbers": "warn",
+        "no-console": "warn",
+        "no-extra-parens": "warn",
+        "node/no-sync": "warn"
+    }
+}
