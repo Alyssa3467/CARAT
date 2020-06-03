@@ -3,7 +3,7 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
-const debug = require('debug')('carat:main');
+const debug = require('debug')('carat:common:main');
 const express = require('express');
 const helmet = require('helmet');
 const hpp = require('hpp'); // HTTP Parameter Pollution prevention
