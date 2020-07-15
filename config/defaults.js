@@ -14,4 +14,7 @@ module.exports = {
   http: {
     port: process.env.HTTP_PORT,
   },
+  logs: {
+    httpd: './logs/httpd/',
+  },
 };
