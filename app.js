@@ -21,11 +21,11 @@ app.use(hpp());
 const loggerFormat =
   ':date[iso] :remote-addr :method :url :status :referrer :user-agent :response-time ms - :res[content-length]';
 app.use(logger(loggerFormat));
-// parse req.body for JSON
+// Parse req.body for JSON
 app.use(bodyParser.json());
-// parse req.body for POST parameters
+// Parse req.body for POST parameters
 app.use(bodyParser.urlencoded({ extended: false }));
-// parse req.body for cookies
+// Parse req.body for cookies
 app.use(cookieParser());
 
 // uncomment after placing favicon in /public_html

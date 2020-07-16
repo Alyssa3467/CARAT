@@ -72,7 +72,7 @@ try {
 /**
  * Create HTTPS server if certificates have loaded.
  */
-
+debug('certLoaded:', certLoaded);
 const httpsServer = certLoaded
   ? https.createServer(httpsOptions, app)
   : undefined;
@@ -88,16 +88,17 @@ const httpsRedirector = function (req, res) {
   debug('HTTPS redirect');
   const httpStatus = require('http-status-codes');
   const url = new URL(req.url, `http://${req.headers.host}`);
-  res.writeHead(
-    httpStatus.PERMANENT_REDIRECT,
-    {
-      'Location': 'https://' + url.hostname + ':' + httpsPort + url.pathname + url.search
-    }
-  );
+  res.writeHead(httpStatus.PERMANENT_REDIRECT, {
+    Location:
+      'https://' + url.hostname + ':' + httpsPort + url.pathname + url.search,
+  });
   res.end();
 };
-
-const httpServer = httpsServer ? http.createServer(httpsRedirector) : http.createServer(app);
+debug('secure redirect:', httpsServer !== undefined);
+const httpServer =
+  httpsServer !== undefined
+    ? http.createServer(httpsRedirector)
+    : http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.

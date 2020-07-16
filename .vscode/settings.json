@@ -1,12 +1,14 @@
 {
-    "editor.detectIndentation": false,
-    "editor.renderWhitespace": "boundary",
-    "editor.tabSize": 2,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
-    "git.autoStash": true,
-    "git.fetchOnPull": true,
-    "javascript.format.semicolons": "insert",
-    "javascript.preferences.quoteStyle": "single",
-    "typescript.format.semicolons": "insert"
+  "editor.detectIndentation": false,
+  "editor.renderWhitespace": "boundary",
+  "editor.tabSize": 2,
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autoStash": true,
+  "git.fetchOnPull": true,
+  "javascript.format.semicolons": "insert",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.format.semicolons": "insert"
 }
