@@ -58,7 +58,7 @@
       "eslint --cache --fix"
     ]
   },
-  "prettier":{
+  "prettier": {
     "semi": true,
     "singleQuote": true,
     "tabWidth": 2,
