@@ -40,5 +40,6 @@
       }
     ]
     // "sort-keys": ["warn", "asc", { "natural": true }]
-  }
+  },
+  "reportUnusedDisableDirectives": true
 }
