@@ -11,8 +11,25 @@ const helmet = require('helmet');
 const hpp = require('hpp'); // HTTP Parameter Pollution prevention
 const httpStatus = require('http-status-codes');
 const logger = require('morgan');
+const mongoose = require('mongoose');
 const path = require('path');
 // const favicon = require('serve-favicon');
+
+// Load config files
+const config = require('./config');
+
+// Database Setup
+// Use native promises
+mongoose.Promise = global.Promise;
+// Connect to database
+// TODO: do something with caught connection errors?
+mongoose.connect(config.db.uri, config.db.options).catch(error => {
+  debug(error);
+  createError(httpStatus.INTERNAL_SERVER_ERROR, error);
+});
+mongoose.connection.on('error', err => {
+  createError(httpStatus.INTERNAL_SERVER_ERROR, err);
+});
 
 const app = express();
 
