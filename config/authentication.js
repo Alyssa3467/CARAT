@@ -1,10 +1,16 @@
 'use strict';
+/* eslint-disable no-magic-numbers */
 
 const debug = require('debug')('backend:config:auth');
 
 const BCRYPT_COST_FACTOR = (function(testHash, minCost, loginTimeTarget) {
-  const { performance } = require('perf_hooks');
+  // const { performance, PerformanceObserver } = require('perf_hooks');
   const bcrypt = require('bcrypt');
+
+  // let perf = 0;
+  // const obs = new PerformanceObserver((list, observer) => {
+  //   perf = list.getEntries()[0].duration;
+  // })
 
   // Default to hash of 'correct horse battery staple' with cost factor 10
   testHash =
@@ -12,11 +18,9 @@ const BCRYPT_COST_FACTOR = (function(testHash, minCost, loginTimeTarget) {
 
   const actualCost = bcrypt.getRounds(testHash);
 
-  /* eslint-disable no-magic-numbers */
   const BCRYPT_MIN_COST = parseInt(minCost) || 10;
   const BCRYPT_MAX_COST = 31;
   const LOGIN_TIME_TARGET = parseFloat(loginTimeTarget) || 1000; // milliseconds
-  /* eslint-enable no-magic-numbers */
   const TEST_WRONG_PASSWORD = 'scrambled eggs & hashed browns';
 
   const startTime = performance.now();
