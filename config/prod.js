@@ -1,4 +1,4 @@
-/* eslint-disable sort-keys */
+// /* eslint-disable sort-keys */
 'use strict';
 
 module.exports = {
@@ -9,9 +9,9 @@ module.exports = {
     passphrase: process.env.SSL_PASSPHRASE,
   },
   https: {
-    port: '8443',
+    port: '443',
   },
   http: {
-    port: '8080',
+    port: '80',
   },
 };
