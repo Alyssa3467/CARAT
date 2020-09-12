@@ -29,12 +29,12 @@
     "debug": "^4.1.1",
     "dotenv-defaults": "^1.1.1",
     "express": "^4.17.1",
-    "helmet": "^3.22.0",
+    "helmet": "^4.1.1",
     "hpp": "^0.2.3",
     "http-errors": "^1.7.3",
     "http-status-codes": "^1.4.0",
-    "lodash": "^4.17.15",
-    "mongoose": "^5.9.28",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.10.5",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
@@ -43,8 +43,8 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.6"
+    "husky": "^4.3.0",
+    "lint-staged": "^10.3.0"
   },
   "husky": {
     "hooks": {
