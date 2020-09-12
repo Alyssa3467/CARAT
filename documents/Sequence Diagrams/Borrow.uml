@@ -1,0 +1,53 @@
+@startuml
+actor User
+boundary Boundary as "Login Boundary"
+control Control as "Login Control"
+database Database
+
+activate User
+activate Boundary
+User -> Boundary: username: [something]\npassword: [something]\n
+note right of User
+For security purposes,
+the password never
+crosses the boundary
+end note
+Boundary -> Control: HTTP POST /api/authenticate\nusername: [something]
+activate Control
+Control->Database: getSalt()
+activate Database
+Database-->Control
+deactivate Database
+
+	Control->Control: createChallenge()
+	Control->Database: saveChallenge()
+	activate Database
+	Database-->Control
+	deactivate Database
+	Control-->Boundary: HTTP 401 Unauthorized\nWWW-Authenticate: Bearer
+deactivate Control
+note right of Control
+		JSON:
+			success: false,
+			msg: 'No response to challenge',
+			challenge: [challenge key],
+			salt: [salt]
+end note
+
+Boundary->Boundary: generateResponse()
+Boundary->Control: HTTP POST/api/authenticate\nusername: [something]\nresponse: [response]
+activate Control
+Control->Database: authenticateUser()
+activate Database
+Database-->Control
+deactivate Database
+Control-->Boundary: HTTP 200 OK
+deactivate Control
+note right of Control
+	JWT:
+		name: [name]
+		iat: [issue date/time]
+		exp: [expiration date/time]
+end note
+Boundary->User: Logged in
+@enduml

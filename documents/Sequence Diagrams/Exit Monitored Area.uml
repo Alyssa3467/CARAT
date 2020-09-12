@@ -1,0 +1,21 @@
+@startuml
+actor Staff
+boundary "Exit Area Boundary"
+control "Exit Area Control"
+database Database
+boundary "Scanner Boundary"
+
+activate "Staff"
+activate "Exit Area Boundary"
+activate "Exit Area Control"
+activate Database
+activate "Scanner Boundary"
+
+Staff -> "Scanner Boundary" : Scans Attendee's badge
+"Scanner Boundary" -> "Exit Area Control" : onBadgeScanned()
+"Exit Area Control" -> Database : userExitedArea()
+Database --> "Exit Area Control" : success
+"Exit Area Control" -> "Exit Area Boundary" : onSuccess()
+"Exit Area Boundary" -> Staff : Indicates success
+
+@enduml

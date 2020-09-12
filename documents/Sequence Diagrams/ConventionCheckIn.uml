@@ -1,0 +1,38 @@
+@startuml
+actor Staff
+boundary "Check-In Boundary"
+control "Check-In Control"
+database Database
+boundary "Printer Boundary"
+boundary "Scanner Boundary"
+
+activate "Check-In Boundary"
+activate "Check-In Control"
+activate Database
+activate "Printer Boundary"
+activate "Scanner Boundary"
+
+Staff -> "Check-In Boundary" : Enter Confirmation Number
+"Check-In Boundary" -> "Check-In Control" : checkConfNumber()
+"Check-In Control" -> Database : isConfNumberValid()
+
+alt Confirmation Number Valid
+  Database --> "Check-In Control" : success
+  "Check-In Control" -> "Check-In Boundary" : numberValid()
+  "Check-In Boundary" -> Staff : Indicate that Confirmation Number is valid
+  "Check-In Control" -> "Printer Boundary" : printBadge()
+  Staff -> "Scanner Boundary" : Scan printed Badge
+  "Scanner Boundary" -> "Check-In Boundary" : badgeScanned()
+  "Check-In Control" -> Database : checkIn()
+  Database --> "Check-In Control" : success
+  "Check-In Control" -> "Check-In Boundary" : checkedIn()
+  "Check-In Boundary" -> Staff : Indicate succesful check-in
+  
+
+else Confirmation Number Invalid
+  Database --> "Check-In Control" : failure
+  "Check-In Control" -> "Check-In Boundary" : numberInvalid()
+  "Check-In Boundary" -> Staff : Indicates that number is invalid
+
+end
+@enduml

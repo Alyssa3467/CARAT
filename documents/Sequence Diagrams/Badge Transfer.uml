@@ -1,0 +1,36 @@
+@startuml
+actor "Attendee 1"
+actor "Attendee 2"
+boundary "Badge Transfer Boundary"
+control "Badge Transfer Control"
+database Database
+
+activate Database
+
+"Attendee 1" -> "Badge Transfer Control" : Opens Badge Transfer interface
+activate "Badge Transfer Control"
+"Badge Transfer Control" -> "Badge Transfer Boundary" : create()
+activate "Badge Transfer Boundary"
+"Badge Transfer Control" -> Database : getBadgesByUser()
+Database --> "Badge Transfer Control" : user's badges
+"Badge Transfer Control" -> "Badge Transfer Boundary" : showBadges()
+"Badge Transfer Boundary" -> "Attendee 1" : Displays badges
+"Attendee 1" -> "Badge Transfer Boundary" : Selects a badge
+"Badge Transfer Boundary" -> "Badge Transfer Control" : onBadgeSelected()
+"Badge Transfer Boundary" -> "Attendee 1" : Shows user search interface
+"Attendee 1" -> "Badge Transfer Boundary" : Enters name of Attendee 2
+"Badge Transfer Boundary" -> "Badge Transfer Control" : searchUser()
+"Badge Transfer Control" -> Database : searchUser()
+Database --> "Badge Transfer Control" : search results
+"Badge Transfer Control" -> "Badge Transfer Boundary" : showSearchResults()
+"Badge Transfer Boundary" -> "Attendee 1" : Displays search results
+"Attendee 1" -> "Badge Transfer Boundary" : Selects Attendee 2's account
+"Badge Transfer Boundary" -> "Badge Transfer Control" : onTargetSelected()
+"Badge Transfer Control" -> Database : transferBadge()
+Database --> "Badge Transfer Control" : success
+"Badge Transfer Control" -> "Badge Transfer Boundary" : onSuccess()
+"Badge Transfer Boundary" -> "Attendee 1" : Indicate success
+"Badge Transfer Control" ->] : Notify Attendee 2
+[--> "Attendee 2" : Notification of new Badge
+
+@enduml

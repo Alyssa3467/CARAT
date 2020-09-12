@@ -1,0 +1,30 @@
+@startuml
+actor Staff
+boundary "Badge Replacement Boundary"
+control "Badge Replacement Control"
+database Database
+boundary "Printer Boundary"
+boundary "Scanner Boundary"
+
+activate "Badge Replacement Boundary"
+activate "Badge Replacement Control"
+activate Database
+activate "Printer Boundary"
+activate "Scanner Boundary"
+
+Staff -> "Badge Replacement Boundary" : Enter Attendee's username
+"Badge Replacement Boundary" -> "Badge Replacement Control" : searchUsername()
+"Badge Replacement Control" -> Database : searchUsername()
+Database --> "Badge Replacement Control" : search results
+"Badge Replacement Control" -> "Badge Replacement Boundary" : onSearchResults()
+"Badge Replacement Boundary" -> Staff : Display search results
+Staff -> "Badge Replacement Boundary" : Select Attendee's account
+"Badge Replacement Boundary" -> "Badge Replacement Control" : onAccountSelected()
+"Badge Replacement Control" -> "Printer Boundary" : printBadge()
+"Scanner Boundary" -> "Badge Replacement Control" : badgeScanned()
+"Badge Replacement Control" -> Database : replaceBadge()
+Database --> "Badge Replacement Control" : success
+"Badge Replacement Control" -> "Badge Replacement Boundary" : onSuccess()
+"Badge Replacement Boundary" -> Staff : Indicate success
+
+@enduml

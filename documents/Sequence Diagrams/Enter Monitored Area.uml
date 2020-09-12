@@ -1,0 +1,21 @@
+@startuml
+actor Staff
+boundary "Enter Area Boundary"
+control "Enter Area Control"
+database Database
+boundary "Scanner Boundary"
+
+activate "Staff"
+activate "Enter Area Boundary"
+activate "Enter Area Control"
+activate Database
+activate "Scanner Boundary"
+
+Staff -> "Scanner Boundary" : Scans Attendee's badge
+"Scanner Boundary" -> "Enter Area Control" : onBadgeScanned()
+"Enter Area Control" -> Database : userEnteredArea()
+Database --> "Enter Area Control" : success
+"Enter Area Control" -> "Enter Area Boundary" : onSuccess()
+"Enter Area Boundary" -> Staff : Indicates success
+
+@enduml
