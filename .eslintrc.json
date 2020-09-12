@@ -21,7 +21,7 @@
     "SharedArrayBuffer": "readonly"
   },
   "parserOptions": {
-    "ecmaVersion": 2017,
+    "ecmaVersion": 6,
     "sourceType": "script"
   },
   "rules": {
@@ -41,5 +41,6 @@
     ]
     // "sort-keys": ["warn", "asc", { "natural": true }]
   },
-  "reportUnusedDisableDirectives": true
+  "reportUnusedDisableDirectives": true,
+  "ignorePatterns": ["/common/logger/index.js"]
 }
