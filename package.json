@@ -34,6 +34,7 @@
     "http-errors": "^1.7.3",
     "http-status-codes": "^1.4.0",
     "lodash": "^4.17.15",
+    "mongoose": "^5.9.28",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
