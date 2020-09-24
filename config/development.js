@@ -2,7 +2,9 @@
 'use strict';
 
 const path = require('path');
-
+require('debug')('carat:config:development.js')(
+  'development configuration loaded'
+);
 module.exports = {
   db: {
     uri: 'mongodb+srv://cluster0.tvevf.azure.mongodb.net/',
@@ -10,7 +12,7 @@ module.exports = {
       dbName: 'devDB',
       auth: {
         user: 'webapp',
-        pass: 'IDfXQHD6nV8oT4vh',
+        password: 'IDfXQHD6nV8oT4vh',
       },
       useNewUrlParser: true,
       useUnifiedTopology: true,

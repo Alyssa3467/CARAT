@@ -18,6 +18,8 @@ const path = require('path');
 // Load config files
 const config = require('./config');
 
+debug('db configuration:');
+debug(config.db);
 // Database Setup
 // Use native promises
 mongoose.Promise = global.Promise;

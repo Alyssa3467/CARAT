@@ -1,6 +1,5 @@
-/* eslint-disable sort-keys */
 'use strict';
-
+require('debug')('carat:config:defaults')('defaults loaded');
 module.exports = {
   ssl: {
     key: process.env.SSL_KEY,

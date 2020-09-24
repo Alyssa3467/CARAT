@@ -27,7 +27,6 @@
     "no-magic-numbers": "warn",
     "no-confusing-arrow": "error",
     "no-console": "warn",
-    "no-extra-parens": "warn",
     "node/no-sync": "warn",
     "quotes": [
       "warn",

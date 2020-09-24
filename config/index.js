@@ -8,5 +8,5 @@ const config = process.env.NODE_ENV
   ? require('./' + process.env.NODE_ENV + '.js')
   : {};
 const combined = _.merge({}, defaults, authentication, config);
-
+require('debug')('carat:config:index')(combined);
 module.exports = combined;
