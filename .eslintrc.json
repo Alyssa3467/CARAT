@@ -1,10 +1,8 @@
 {
   "env": {
-    "browser": true,
     "node": true,
     "commonjs": true,
     "es6": true,
-    "mocha": true,
     "mongo": true
   },
   "extends": [
@@ -39,5 +37,16 @@
     "semi": ["error", "always"]
   },
   "reportUnusedDisableDirectives": true,
-  "ignorePatterns": ["/common/logger/index.js"]
+  "ignorePatterns": ["/common/logger/index.js"],
+  "overrides": [
+    {
+      "files": ["./test/*.js"],
+      "env": {
+        "mocha": true
+      },
+      "rules": {
+        "node/no-unpublished-require": "off"
+      }
+    }
+  ]
 }
