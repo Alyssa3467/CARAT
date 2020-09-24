@@ -48,8 +48,7 @@ user.create = async (username, password) => {
   if (!await user.model.exists({ username: username })) {
     debug('Creating new user: ' + username);
     debug('bcryptCostFactor: ' + bcryptCostFactor);
-    // eslint-disable-next-line node/no-sync
-    const hash = bcrypt.hashSync(password, bcryptCostFactor);
+    const hash = await bcrypt.hash(password, bcryptCostFactor);
     debug('hash:', hash);
     const newUser = await user.model.create({
       username: username,

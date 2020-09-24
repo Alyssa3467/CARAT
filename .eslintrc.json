@@ -1,10 +1,8 @@
 {
-  "plugins": ["promise"],
   "env": {
     "browser": true,
     "node": true,
     "commonjs": true,
-    "shared-node-browser": true,
     "es6": true,
     "mocha": true,
     "mongo": true
@@ -21,8 +19,7 @@
     "SharedArrayBuffer": "readonly"
   },
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "script"
+    "ecmaVersion": 2018
   },
   "rules": {
     "strict": ["error", "global"],
@@ -38,8 +35,9 @@
       {
         "avoidEscape": true
       }
-    ]
-    // "sort-keys": ["warn", "asc", { "natural": true }]
+    ],
+    "linebreak-style": ["error", "windows"],
+    "semi": ["error", "always"]
   },
   "reportUnusedDisableDirectives": true,
   "ignorePatterns": ["/common/logger/index.js"]
